@@ -14,13 +14,12 @@ export default class Start extends React.Component {
     super(props);
     this.state = {
       name: "",
-      colors: ["#090C08", "#474056", "#8A95A5", "#B9C6AE"],
       selectedColorIndex: 2,
     };
   }
 
   render() {
-    //let [name, colors, selectedColorIndex] = this.state;
+    const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
     return (
       <View style={styles.flex1}>
         <ImageBackground
@@ -45,7 +44,7 @@ export default class Start extends React.Component {
                   style={[
                     styles.colorSelector,
                     {
-                      backgroundColor: this.state.colors[0],
+                      backgroundColor: colors[0],
                       borderColor:
                         this.state.selectedColorIndex === 0
                           ? "darkgrey"
@@ -62,7 +61,7 @@ export default class Start extends React.Component {
                   style={[
                     styles.colorSelector,
                     {
-                      backgroundColor: this.state.colors[1],
+                      backgroundColor: colors[1],
                       borderColor:
                         this.state.selectedColorIndex === 1
                           ? "darkgrey"
@@ -75,7 +74,7 @@ export default class Start extends React.Component {
                   style={[
                     styles.colorSelector,
                     {
-                      backgroundColor: this.state.colors[2],
+                      backgroundColor: colors[2],
                       borderColor:
                         this.state.selectedColorIndex === 2
                           ? "gray"
@@ -88,7 +87,7 @@ export default class Start extends React.Component {
                   style={[
                     styles.colorSelector,
                     {
-                      backgroundColor: this.state.colors[3],
+                      backgroundColor: colors[3],
                       borderColor:
                         this.state.selectedColorIndex === 3
                           ? "grey"
@@ -104,8 +103,7 @@ export default class Start extends React.Component {
                 onPress={() =>
                   this.props.navigation.navigate("Chat", {
                     name: this.state.name,
-                    backgroundColor:
-                      this.state.colors[this.state.selectedColorIndex],
+                    color: colors[this.state.selectedColorIndex],
                   })
                 }
               >
