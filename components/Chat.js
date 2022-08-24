@@ -1,9 +1,10 @@
 import React from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
-import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+// Native Storage & Network Info packages
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Firebase
+import NetInfo from '@react-native-community/netinfo';
+// Firebase imports & configuration
 const firebase = require('firebase');
 require('firebase/firestore');
 const firebaseConfig = {
@@ -20,8 +21,8 @@ export default class Chat extends React.Component {
     super(props);
     this.state = {
       backgroundColor: '',
+      isConnected: '',
       messages: [],
-      uid: 0,
       user: {
         _id: '',
         name: '',
@@ -45,52 +46,77 @@ export default class Chat extends React.Component {
       _id: message._id,
       text: message.text || '',
       createdAt: message.createdAt,
-      user: message.user,
+      user: {
+        ...this.state.user,
+        name: this.state.user.name || 'anonymous user',
+      },
     });
+    console.log('addMessage added: ', message);
   };
 
+  async getMessages() {
+    let messages = '';
+    try {
+      messages = (await AsyncStorage.getItem('messages')) || [];
+      this.setState({ messages: JSON.parse(messages) });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   componentDidMount() {
-    // Get & Set User's name as Chat Title
+    // Get & Set User's name for Chat Title
     let { name } = this.props.route.params;
     this.props.navigation.setOptions({ title: name });
-
     // Set personalized background color
     this.setState({
       backgroundColor: this.props.route.params.color,
     });
 
-    // AUTHENTICATION
-    /* Call Firestore auth() service, subscribe Anonymous user
-       & save returned function to unsubscribe it */
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
-      // Subscribe Anonymous User (if none subscribed)
-      if (!user) {
-        await firebase.auth().signInAnonymously();
-      }
-      //update user state with current active user data
-      this.setState({
-        uid: user.uid,
-        user: {
-          _id: user.uid,
-          name: name,
-        },
-      });
-    });
+    // Verify status on user's Network
+    NetInfo.fetch().then((connection) => {
+      if (connection.isConnected) {
+        this.setState({ isConnected: true });
+        // AUTHENTICATE User
+        /* Call Firestore auth() service, subscribe Anonymous user
+           & save returned function to unsubscribe it */
+        this.authUnsubscribe = firebase
+          .auth()
+          .onAuthStateChanged(async (user) => {
+            // Subscribe Anonymous User (if none subscribed)
+            if (!user) {
+              await firebase.auth().signInAnonymously();
+            }
+            // Update user state with current authenticated user
+            this.setState({
+              user: {
+                _id: user.uid,
+                name: name,
+              },
+            });
+          });
 
-    // FIRESTORE DB
-    // Reference 'messages' Collection
-    this.referenceChatMessages = firebase.firestore().collection('messages');
-    /* Create "messages" collection observer & pass it a callback (to handle updates)
-     then save returned function (used to unsubscribe observer):  */
-    this.unsubscribe = this.referenceChatMessages
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(this.onCollectionUpdate);
+        // LOAD Messages from DB (updating state & local Storage)
+        this.referenceChatMessages = firebase
+          .firestore()
+          .collection('messages');
+        /* Create "messages" collection observer, pass it updates handler &
+           save returned function (used to unsubscribe observer):  */
+        this.unsubscribe = this.referenceChatMessages
+          .orderBy('createdAt', 'desc')
+          .onSnapshot(this.onCollectionUpdate);
+      } else {
+        this.setState({ isConnected: false });
+        // Get messages from local Storage
+        this.getMessages();
+      }
+    });
   }
 
   componentWillUnmount() {
-    // stop listening to the collection changes & authentication
-    this.unsubscribe();
-    this.authUnsubscribe();
+    // Stop listening to the collection changes & authentication
+    if (this.unsusbscribe) this.unsubscribe();
+    if (this.authUnsusbscribe) this.authUnsubscribe();
   }
 
   // Updates messages state after DB update
@@ -109,14 +135,42 @@ export default class Chat extends React.Component {
         },
       });
     });
-    this.setState({ messages });
+    // Update messages in state & local Storage
+    this.setState({ messages }, () => this.saveMessages());
   };
+
+  async saveMessages() {
+    try {
+      await AsyncStorage.setItem(
+        'messages',
+        JSON.stringify(this.state.messages)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  // Removes messages from local storage & state (but not DB)
+  async deleteMessages() {
+    try {
+      await AsyncStorage.removeItem('messages');
+      this.setState({ messages: [] });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   // Add message to messages state
   onSend(messages = []) {
-    this.setState((previousState) => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
+    this.setState(
+      (previousState) => ({
+        messages: GiftedChat.append(previousState.messages, messages),
+      }),
+      // callback is guaranteed to get fired once update is applied
+      () => {
+        this.saveMessages();
+      }
+    );
     // Update Firestore with last message
     this.addMessage(messages[0]);
   }
@@ -134,6 +188,13 @@ export default class Chat extends React.Component {
     );
   }
 
+  renderInputToolbar(props) {
+    if (this.state.isConnected == false) {
+    } else {
+      return <InputToolbar {...props} />;
+    }
+  }
+
   render() {
     return (
       <View style={{ backgroundColor: this.state.backgroundColor, flex: 1 }}>
@@ -142,6 +203,7 @@ export default class Chat extends React.Component {
           messages={this.state.messages}
           onSend={(message) => this.onSend(message)}
           user={{ _id: this.state.user._id, name: this.state.user.name }}
+          renderInputToolbar={this.renderInputToolbar.bind(this)}
         />
         {Platform.OS === 'android' ? (
           <KeyboardAvoidingView behavior='height' />

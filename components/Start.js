@@ -1,5 +1,5 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   ImageBackground,
@@ -7,23 +7,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 
 export default class Start extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: '',
       selectedColorIndex: 2,
     };
   }
 
   render() {
-    const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
+    const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
     return (
       <View style={styles.flex1}>
         <ImageBackground
-          source={require("../assets/BackgroundImage.png")}
+          source={require('../assets/BackgroundImage.png')}
           style={styles.image}
         >
           <Text style={styles.title}>Chat App</Text>
@@ -47,8 +47,8 @@ export default class Start extends React.Component {
                       backgroundColor: colors[0],
                       borderColor:
                         this.state.selectedColorIndex === 0
-                          ? "darkgrey"
-                          : "transparent",
+                          ? 'darkgrey'
+                          : 'transparent',
                     },
                   ]}
                   onPress={() =>
@@ -64,8 +64,8 @@ export default class Start extends React.Component {
                       backgroundColor: colors[1],
                       borderColor:
                         this.state.selectedColorIndex === 1
-                          ? "darkgrey"
-                          : "transparent",
+                          ? 'darkgrey'
+                          : 'transparent',
                     },
                   ]}
                   onPress={() => this.setState({ selectedColorIndex: 1 })}
@@ -77,8 +77,8 @@ export default class Start extends React.Component {
                       backgroundColor: colors[2],
                       borderColor:
                         this.state.selectedColorIndex === 2
-                          ? "gray"
-                          : "transparent",
+                          ? 'gray'
+                          : 'transparent',
                     },
                   ]}
                   onPress={() => this.setState({ selectedColorIndex: 2 })}
@@ -90,8 +90,8 @@ export default class Start extends React.Component {
                       backgroundColor: colors[3],
                       borderColor:
                         this.state.selectedColorIndex === 3
-                          ? "grey"
-                          : "transparent",
+                          ? 'grey'
+                          : 'transparent',
                     },
                   ]}
                   onPress={() => this.setState({ selectedColorIndex: 3 })}
@@ -101,7 +101,7 @@ export default class Start extends React.Component {
             <View style={styles.button}>
               <TouchableOpacity
                 onPress={() =>
-                  this.props.navigation.navigate("Chat", {
+                  this.props.navigation.navigate('Chat', {
                     name: this.state.name,
                     color: colors[this.state.selectedColorIndex],
                   })
@@ -109,9 +109,9 @@ export default class Start extends React.Component {
               >
                 <Text
                   style={{
-                    color: "#FFFFFF",
+                    color: '#FFFFFF',
                     fontSize: 18,
-                    fontWeight: "600",
+                    fontWeight: '600',
                   }}
                 >
                   Start Chatting
@@ -132,50 +132,52 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
-    flexDirection: "column",
-    alignItems: "center",
+    resizeMode: 'cover',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   title: {
     marginTop: 100,
+    fontWeight: '600',
+    color: 'white',
     flex: 1,
     fontSize: 45,
   },
   uibox: {
     flex: 0,
-    marginBottom: "7%",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "44%",
-    width: "88%",
+    marginBottom: '7%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '44%',
+    width: '88%',
     fontSize: 45,
-    backgroundColor: "whitesmoke",
+    backgroundColor: 'whitesmoke',
   },
   nameInput: {
     height: 45,
     fontSize: 19,
-    width: "88%",
-    marginTop: "7%",
-    borderColor: "grey",
+    width: '88%',
+    marginTop: '7%',
+    borderColor: 'grey',
     borderWidth: 1,
     paddingLeft: 7,
   },
   selectColorBox: {
     flex: 2,
-    flexDirection: "column",
-    width: "88%",
-    alignItems: "flex-start",
-    justifyContent: "center",
+    flexDirection: 'column',
+    width: '88%',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   selectColorTitle: {
-    textAlign: "left",
-    alignSelf: "flex-start",
+    textAlign: 'left',
+    alignSelf: 'flex-start',
     fontSize: 18,
-    color: "#757083",
+    color: '#757083',
     marginTop: 30,
   },
   colorsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   colorSelector: {
     height: 48,
@@ -184,17 +186,17 @@ const styles = StyleSheet.create({
     margin: 3,
     marginTop: 10,
     borderWidth: 3,
-    borderStyle: "solid",
+    borderStyle: 'solid',
   },
 
   button: {
-    marginTop: "auto",
+    marginTop: 'auto',
     height: 45,
-    width: "88%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#757083",
-    marginBottom: "7%",
+    width: '88%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#757083',
+    marginBottom: '7%',
   },
 });
