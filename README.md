@@ -17,14 +17,13 @@ Not as famous as Whatsapp or Telegram, chat-app is a modest Mobile chatting appl
 ## This project was developed using:
 
 - **React-Native:** A cross-platform JavaScript framework for native mobile applications. It's UI Components map native components in IOS and Android, making it almost as performant as Native Applications but, with the advantage of using a single Codebase.
-- **Expo:** A Software Development Kit (SDK) used to develop and test the Mobile Application.
+- **Expo:** A toolchain with its own Software Development Kit (SDK) used to develop and test the App.
 - **VS Code:** A free source-code editor developed by Microsoft (for Windows, Linux and macOS).
 - **Android Studio:** with its Android emulator to test the App in Android Virtual Devices.
 - **Expo Go:** A Mobile App to test the application in your smartphone device.
-- **Firebase:** An app development platform backed by Google.
-- **Firestore:** Google's cloud-hosted NoSQL Database that listens for real-time updates.
+- **Firebase/Firestore:** An app development platform backed by Google. Firestore being Google's cloud-hosted NoSQL Database that listens for real-time updates.
 
-### Third-party packages
+### Other dependencies & third-party packages
 
 - GiftedChat
 - React Native AsyncStorage
@@ -44,15 +43,15 @@ Not as famous as Whatsapp or Telegram, chat-app is a modest Mobile chatting appl
 ## How to run and test the project
 
 1. Download and install the latest LTS version from Node.js: https://nodejs.org/en/
-2. Install Expo CLI as a global npm package in your terminal: npm install --global expo-cli
+2. Install Expo CLI as a global npm package in your terminal:
+   `npm install --global expo-cli`
 3. To run the app on your phone install the 'Expo Go' app (from Google Play Store or the App Store).
 4. Clone repository:
-   git clone https://github.com/alelubos/chat-app.git
-
+   `git clone https://github.com/alelubos/chat-app.git`
 5. Situated in the project's folder, install all of its dependecies using in terminal:
-   npm install
+   `npm install`
 6. Start the Metro Bundler and serve the project from Terminal with:
-   expo start
+   `expo start`
 7. On your smartphone phone, open 'Expo Go' and either Scan the QR Code presented in your Terminal or manually type the address where the project is served.
 
 ## To implement your own DB with Firebase
