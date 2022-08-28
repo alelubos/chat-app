@@ -26,7 +26,7 @@ export default class Start extends React.Component {
           source={require('../assets/BackgroundImage.png')}
           style={styles.image}
         >
-          <Text style={styles.title}>Chat App</Text>
+          <Text style={styles.title}>ChatApp</Text>
           <View style={styles.uibox}>
             <TextInput
               style={styles.nameInput}
@@ -37,7 +37,7 @@ export default class Start extends React.Component {
 
             <View style={styles.selectColorBox}>
               <Text style={styles.selectColorTitle}>
-                Choose Background Color:
+                Choose a Background Color:
               </Text>
               <View style={styles.colorsContainer}>
                 <TouchableOpacity
@@ -137,21 +137,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginTop: 100,
-    fontWeight: '600',
-    color: 'white',
+    marginTop: 110,
+    fontWeight: '700',
+    color: 'hsl(216, 73%, 33%)',
     flex: 1,
     fontSize: 45,
   },
   uibox: {
-    flex: 0,
+    flex: 1,
+    flexDirection: 'column',
     marginBottom: '7%',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '44%',
+    justifyContent: 'space-evenly',
+    height: '40%',
     width: '88%',
     fontSize: 45,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: '#ffffffbb',
+    borderRadius: 14,
   },
   nameInput: {
     height: 45,
@@ -161,6 +163,8 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1,
     paddingLeft: 7,
+    borderRadius: 7,
+    backgroundColor: 'white',
   },
   selectColorBox: {
     flex: 2,
@@ -171,6 +175,7 @@ const styles = StyleSheet.create({
   },
   selectColorTitle: {
     textAlign: 'left',
+    paddingLeft: 7,
     alignSelf: 'flex-start',
     fontSize: 18,
     color: '#757083',
@@ -196,7 +201,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#757083',
+    backgroundColor: 'hsl(216, 43%, 50%)',
     marginBottom: '7%',
+    borderRadius: 7,
   },
 });
